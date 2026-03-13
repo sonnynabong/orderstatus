@@ -9,7 +9,6 @@ A beautiful, secure WooCommerce plugin that lets customers track their order sta
 
 **Developer:** [Sonny Nabong](mailto:info@sonnynabong.dev) • [info@sonnynabong.dev](mailto:info@sonnynabong.dev)
 
-![Plugin Screenshot](https://via.placeholder.com/800x400/3b82f6/ffffff?text=WC+Order+Status+Tracker)
 
 ## Table of Contents
 
@@ -49,11 +48,6 @@ A beautiful, secure WooCommerce plugin that lets customers track their order sta
 - **Protocol validation** - Only allows safe `http://` and `https://` URLs
 - **Security attributes** - Links open in new tab with `rel="noopener noreferrer"`
 
-## Screenshots
-
-| Tracking Form | Order Status Result |
-|:-------------:|:-------------------:|
-| ![Form](https://via.placeholder.com/350x300/f3f4f6/374151?text=Tracking+Form) | ![Result](https://via.placeholder.com/350x300/d1fae5/065f46?text=Status+Result) |
 
 ## Installation
 
