@@ -9,6 +9,18 @@
 
 ![Plugin Screenshot](https://via.placeholder.com/800x400/3b82f6/ffffff?text=WC+Order+Status+Tracker)
 
+## 📋 Table of Contents
+
+- [Features](#-features)
+- [Screenshots](#-screenshots)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Security](#-security)
+- [FAQ](#-faq)
+- [Changelog](#-changelog)
+- [Contributing](#-contributing)
+- [License](#-license)
+
 ## ✨ Features
 
 ### 🎨 Beautiful Design
@@ -51,7 +63,10 @@
 ### Manual
 
 ```bash
-# Download and extract to your plugins folder
+# Clone this repository
+git clone https://github.com/yourusername/wc-order-status-tracker.git
+
+# Or download and extract to your plugins folder
 wp-content/plugins/wc-order-status-tracker/
 ```
 
@@ -92,6 +107,14 @@ Then activate through the WordPress admin.
 ]
 ```
 
+### Creating a Tracking Page
+
+1. Go to **Pages > Add New** in WordPress admin
+2. Add a title like "Track Your Order"
+3. Paste the shortcode: `[wc_order_tracker]`
+4. Publish the page
+5. Add the page to your navigation menu
+
 ## 🎯 What Customers See
 
 1. **📋 Order Header** - Order number with status badge
@@ -102,6 +125,22 @@ Then activate through the WordPress admin.
    ```
 4. **📝 Customer Notes** - Shop manager notes with clickable links
 5. **📦 Order Items** - List of products ordered
+
+## 📁 File Structure
+
+```
+wc-order-status-tracker/
+├── wc-order-status-tracker.php      # Main plugin file
+├── readme.txt                        # WordPress.org readme
+├── README.md                         # This file
+├── SECURITY_AUDIT.md                 # Security documentation
+├── SECURITY_CHECKLIST.md             # Security checklist
+└── assets/
+    ├── css/
+    │   └── wc-ost-style.css          # Plugin styles
+    └── js/
+        └── wc-ost-script.js          # Plugin JavaScript
+```
 
 ## 🔐 Security
 
@@ -116,6 +155,8 @@ This plugin implements enterprise-grade security:
 | **Rate Limiting** | 5 attempts per IP per 15 minutes |
 | **Timing Attack Prevention** | `hash_equals()` for string comparison |
 | **XSS Prevention** | URL protocol validation (http/https only) |
+
+See [SECURITY_AUDIT.md](SECURITY_AUDIT.md) for detailed security analysis.
 
 ## ❓ FAQ
 
@@ -166,12 +207,31 @@ Yes! Fully translatable using WordPress standard gettext functions.
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
 ## 📄 License
 
 This project is licensed under the GPL v2 or later - see the [LICENSE](LICENSE) file for details.
+
+```
+WC Order Status Tracker is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 2 of the License, or
+(at your option) any later version.
+```
 
 ---
 
 <p align="center">
   Built with ❤️ for the WooCommerce community
+</p>
+
+<p align="center">
+  <a href="https://wordpress.org/">WordPress</a> •
+  <a href="https://woocommerce.com/">WooCommerce</a> •
+  <a href="https://github.com/">GitHub</a>
 </p>
