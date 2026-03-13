@@ -1,6 +1,7 @@
 === WC Order Status Tracker ===
 Contributors: yourname
-Tags: woocommerce, order tracking, order status, shortcode, customer
+Donate link: https://example.com/donate
+Tags: woocommerce, order tracking, order status, shortcode, customer, tracking
 Requires at least: 5.8
 Tested up to: 6.4
 Requires PHP: 7.4
@@ -10,139 +11,206 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-A WooCommerce plugin that allows customers to track their order status using Order ID and Email via shortcode.
+A beautiful, secure WooCommerce plugin that lets customers track their order status using Order ID and Email.
 
 == Description ==
 
-WC Order Status Tracker is a simple and elegant WooCommerce plugin that enables your customers to check their order status. 
+**WC Order Status Tracker** is a lightweight, secure, and elegant solution for WooCommerce stores that want to provide order tracking functionality to their customers.
 
-Simply add the `[wc_order_tracker]` shortcode to any page or post, and customers can enter their Order ID and Email to view:
+Simply add the `[wc_order_tracker]` shortcode to any page, and your customers can instantly view their order status, track progress through a visual timeline, and read customer notes with clickable links.
 
-* Current order status with visual timeline
-* Order details (date, customer name, total)
-* Customer notes with clickable links
-* Order items summary
+= 🌟 Features =
 
-= Features =
+**✨ Beautiful Design**
+* Modern, card-based UI with smooth animations
+* Visual timeline showing order progress
+* Responsive design - works perfectly on mobile and desktop
+* Color-coded status badges for quick recognition
 
-* **Easy Shortcode**: Use `[wc_order_tracker]` on any page
-* **AJAX Powered**: No page reload required
-* **Visual Timeline**: Beautiful status history with progress indicator
-* **Link Detection**: Automatically converts URLs in customer notes to clickable links
-* **Responsive Design**: Works perfectly on mobile and desktop
-* **Secure**: Validates order ownership via email matching
-* **Customizable**: Use shortcode attributes to customize title and description
+**🔒 Security First**
+* CSRF protection with nonce verification
+* Rate limiting (5 attempts per 15 minutes)
+* Timing-safe comparison to prevent order enumeration
+* XSS protection with URL protocol validation
+* All inputs sanitized and outputs escaped
+
+**⚡ AJAX Powered**
+* No page reload required
+* Instant feedback with loading states
+* Smooth slide animations
+
+**🔗 Smart Link Detection**
+* Automatically converts URLs in customer notes to clickable links
+* Only allows safe http:// and https:// protocols
+* Opens links in new tab with security attributes
+
+= 📋 What Customers See =
+
+1. **Order Header** - Order number, current status badge
+2. **Order Info** - Date, customer name, total amount
+3. **Status Timeline** - Visual progress through order stages:
+   - Pending Payment → Processing → Completed → Shipped → Delivered
+4. **Customer Notes** - Any notes added by the shop manager
+5. **Order Items** - List of products in the order
+
+= 🎯 Use Cases =
+
+* **Order Tracking Page** - Create a dedicated "Track Your Order" page
+* **Customer Support** - Reduce support tickets by letting customers self-serve
+* **Post-Purchase Experience** - Improve customer satisfaction with transparency
 
 == Installation ==
 
-1. Upload the plugin files to `/wp-content/plugins/wc-order-status-tracker/`, or install the plugin through the WordPress plugins screen directly.
-2. Activate the plugin through the 'Plugins' screen in WordPress.
-3. Make sure WooCommerce is installed and activated.
-4. Add the `[wc_order_tracker]` shortcode to any page or post.
+= Automatic Installation =
+
+1. Go to **Plugins > Add New** in your WordPress admin
+2. Search for "WC Order Status Tracker"
+3. Click **Install Now** then **Activate**
+
+= Manual Installation =
+
+1. Download the plugin zip file
+2. Go to **Plugins > Add New > Upload Plugin**
+3. Choose the zip file and click **Install Now**
+4. Click **Activate**
+
+= Requirements =
+
+* WordPress 5.8 or higher
+* WooCommerce 6.0 or higher
+* PHP 7.4 or higher
 
 == Usage ==
 
-= Basic Usage =
+= Basic Shortcode =
 
-Add the shortcode to any page or post:
+Add this to any page or post:
 
 ```
 [wc_order_tracker]
 ```
 
-= With Custom Title =
+= Custom Title =
 
 ```
-[wc_order_tracker title="Check Your Order Status"]
+[wc_order_tracker title="Track Your Package"]
 ```
 
-= With Custom Description =
+= Custom Description =
 
 ```
-[wc_order_tracker description="Enter your details below to track your package."]
+[wc_order_tracker description="Enter your order details to check the current status."]
 ```
 
-= With Both Attributes =
+= Full Customization =
 
 ```
-[wc_order_tracker title="Track Your Package" description="Enter your order details below"]
+[wc_order_tracker title="Order Status Lookup" description="Find your order using the information from your confirmation email."]
 ```
 
-== How It Works ==
+= Creating a Tracking Page =
 
-1. Customer enters their Order ID (order number)
-2. Customer enters the email address used during checkout
-3. If the Order ID and Email match, the order details are displayed
-4. The customer sees:
-   - Order information header with status badge
-   - Visual timeline showing order progress
-   - Customer notes (with clickable links if URLs are present)
-   - List of ordered items
-
-== Status Timeline ==
-
-The plugin displays a visual timeline showing the order's journey:
-
-* **Pending** - Order received, awaiting payment
-* **Processing** - Payment received, order being prepared
-* **Completed** - Order fulfilled and complete
-* **Shipped** - Order has been shipped
-* **Delivered** - Order has been delivered
-
-Alternative flows are shown for:
-* Cancelled orders
-* Refunded orders
-* On-hold orders
-* Failed orders
+1. Go to **Pages > Add New**
+2. Add a title like "Track Your Order"
+3. Paste the shortcode: `[wc_order_tracker]`
+4. Publish the page
+5. Add the page link to your navigation menu
 
 == Frequently Asked Questions ==
 
 = What Order ID should customers enter? =
 
-Customers should enter their WooCommerce Order ID or Order Number. This is typically found in their order confirmation email.
+Customers should enter their WooCommerce Order ID or Order Number. This is found in their order confirmation email and typically looks like "#123" or just "123".
 
 = What email should customers use? =
 
-Customers must use the same email address they used when placing the order (billing email).
+Customers must use the same email address they used when placing the order (the billing email).
 
 = Will this work with custom order number plugins? =
 
-Yes, the plugin attempts to find orders by both ID and the `_order_number` meta field, which many custom order number plugins use.
+Yes! The plugin searches by both Order ID and the `_order_number` meta field, so it works with most custom order number plugins.
 
 = Can I customize the styling? =
 
-Yes, you can override the CSS by adding your own styles to your theme's stylesheet. The plugin uses specific class prefixes (`wc-ost-`) to avoid conflicts.
+Yes! The plugin uses specific CSS class prefixes (`wc-ost-`) that you can override in your theme's stylesheet. All styles are contained in `assets/css/wc-ost-style.css`.
 
 = Is the order information secure? =
 
-Yes, the plugin validates that the provided email matches the order's billing email before displaying any information.
+Absolutely. The plugin verifies that the provided email matches the order's billing email before displaying any information. It also includes rate limiting, CSRF protection, and XSS prevention.
 
 = Does it support translations? =
 
-Yes, the plugin is fully translatable using WordPress standard gettext functions.
+Yes! The plugin is fully translatable using WordPress standard gettext functions. All text strings are wrapped in translation functions.
+
+= Can I see an order status history? =
+
+Yes! The plugin displays a visual timeline showing the order's journey through different statuses based on the current order state.
+
+= What order statuses are supported? =
+
+The timeline adapts to show the appropriate flow for:
+* Standard orders (Pending → Processing → Completed → Shipped → Delivered)
+* Cancelled orders
+* Refunded orders
+* On-hold orders
+* Failed orders
 
 == Screenshots ==
 
-1. Order tracking form
-2. Order status results with timeline
-3. Mobile responsive view
+1. Order tracking form - Clean, modern form for entering Order ID and Email
+2. Order status results - Visual timeline with order details
+3. Mobile view - Fully responsive design on smartphones
+4. Customer note with links - URLs automatically converted to clickable links
 
 == Changelog ==
 
-= 1.0.0 =
+= 1.0.0 - 2026-03-13 =
 * Initial release
 * Shortcode support with customizable attributes
-* AJAX-powered order lookup
-* Visual status timeline
+* AJAX-powered order lookup with no page reload
+* Visual status timeline with progress indicator
 * Customer note display with auto-link detection
-* Responsive design
+* Rate limiting for security (5 attempts per 15 minutes)
+* CSRF protection with nonce verification
+* XSS protection with URL protocol validation
+* Timing attack mitigation
+* Responsive design for all devices
+* Full translation support
 
 == Upgrade Notice ==
 
 = 1.0.0 =
-Initial release.
+Initial release. No upgrade necessary.
+
+== Security ==
+
+This plugin follows WordPress and WooCommerce security best practices:
+
+* **CSRF Protection**: All AJAX requests verified with nonces
+* **Input Sanitization**: All user inputs sanitized using WordPress functions
+* **Output Escaping**: All output escaped to prevent XSS
+* **SQL Injection Prevention**: Prepared statements for database queries
+* **Rate Limiting**: Prevents brute force attacks
+* **Timing Attack Mitigation**: Constant-time comparison for sensitive data
+
+For security concerns, please contact [your-email@example.com].
 
 == Credits ==
 
-* Built for WooCommerce
+* Built with ❤️ for the WooCommerce community
 * Icons via inline SVG
+* Tested with WordPress 6.4 and WooCommerce 8.0
+
+== License ==
+
+This plugin is licensed under the GPL v2 or later.
+
+WC Order Status Tracker is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
