@@ -188,12 +188,12 @@ class WC_Order_Status_Tracker {
             wp_send_json_error(array('message' => __('Security check failed.', 'wc-order-status-tracker')));
         }
 
-        // Rate limiting: max 5 attempts per IP per 15 minutes
+        // Rate limiting: max 20 attempts per IP per 15 minutes
         $ip_address = $this->get_client_ip();
         $transient_key = 'wc_ost_rate_' . md5($ip_address);
         $attempts = get_transient($transient_key);
         
-        if ($attempts !== false && $attempts >= 5) {
+        if ($attempts !== false && $attempts >= 20) {
             wp_send_json_error(array('message' => __('Too many attempts. Please try again in 15 minutes.', 'wc-order-status-tracker')));
         }
 
