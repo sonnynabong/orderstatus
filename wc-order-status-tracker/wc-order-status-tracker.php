@@ -363,23 +363,9 @@ class WC_Order_Status_Tracker {
             <!-- Customer Notes (checkout note + admin notes to customer) -->
             <?php if ($customer_note || !empty($customer_order_notes)) : ?>
             <div class="wc-ost-customer-note">
-                <h4 class="wc-ost-section-title"><?php _e('Notes', 'wc-order-status-tracker'); ?></h4>
-                
-                <?php if ($customer_note) : ?>
-                <div class="wc-ost-note-content wc-ost-checkout-note">
-                    <?php echo wp_kses_post($this->make_urls_clickable($customer_note)); ?>
-                </div>
-                <?php endif; ?>
-                
-                <?php foreach ($customer_order_notes as $note) : ?>
-                <div class="wc-ost-note-content wc-ost-order-note">
-                    <div class="wc-ost-note-meta">
-                        <?php echo esc_html(wc_format_datetime($note->date_created)); ?>
-                    </div>
-                    <?php echo wp_kses_post($this->make_urls_clickable($note->content)); ?>
-                </div>
-                <?php endforeach; ?>
-            </div>
+                <h4 class="wc-ost-section-title"><?php _e('Notes', 'wc-order-status-tracker'); ?></h4><?php 
+                if ($customer_note) : ?><div class="wc-ost-note-content wc-ost-checkout-note"><?php echo wp_kses_post($this->make_urls_clickable(trim($customer_note))); ?></div><?php endif; 
+                foreach ($customer_order_notes as $note) : ?><div class="wc-ost-note-content wc-ost-order-note"><div class="wc-ost-note-meta"><?php echo esc_html(wc_format_datetime($note->date_created)); ?></div><div class="wc-ost-note-body"><?php echo wp_kses_post($this->make_urls_clickable(trim($note->content))); ?></div></div><?php endforeach; ?></div>
             <?php endif; ?>
 
             <!-- Order Items Summary -->
@@ -426,8 +412,8 @@ class WC_Order_Status_Tracker {
             'failed'     => __('Failed', 'wc-order-status-tracker'),
         );
 
-        // Define the flow for normal orders
-        $normal_flow = array('pending', 'processing', 'completed', 'shipped', 'delivered');
+        // Define the flow for normal orders (without shipped/delivered for standard WooCommerce)
+        $normal_flow = array('pending', 'processing', 'completed');
         
         // Alternative flows
         $cancelled_flow = array('pending', 'cancelled');
@@ -482,25 +468,30 @@ class WC_Order_Status_Tracker {
     private function get_customer_order_notes($order_id) {
         $notes = array();
         
-        // Get all order notes of type 'customer' (visible to customer)
-        $args = array(
-            'post_id' => $order_id,
-            'approve' => 'approve',
-            'type'    => 'order_note',
+        // Get all order notes from WP_COMMENTS table
+        // Type = 'order_note' and is_customer_note meta = 1 for notes visible to customer
+        global $wpdb;
+        
+        $query = $wpdb->prepare(
+            "SELECT c.comment_ID, c.comment_content, c.comment_date 
+             FROM {$wpdb->comments} c 
+             INNER JOIN {$wpdb->commentmeta} cm ON c.comment_ID = cm.comment_id 
+             WHERE c.comment_post_ID = %d 
+             AND c.comment_type = 'order_note' 
+             AND c.comment_approved = '1'
+             AND cm.meta_key = 'is_customer_note' 
+             AND cm.meta_value = '1'
+             ORDER BY c.comment_date ASC",
+            $order_id
         );
         
-        $comments = get_comments($args);
+        $results = $wpdb->get_results($query);
         
-        foreach ($comments as $comment) {
-            $note_meta = get_comment_meta($comment->comment_ID, 'is_customer_note', true);
-            
-            // Check if this is a customer note (is_customer_note = 1)
-            if ($note_meta === '1' || $note_meta === 1 || $note_meta === true) {
-                $notes[] = (object) array(
-                    'content'       => $comment->comment_content,
-                    'date_created'  => wc_string_to_datetime($comment->comment_date),
-                );
-            }
+        foreach ($results as $row) {
+            $notes[] = (object) array(
+                'content'       => $row->comment_content,
+                'date_created'  => wc_string_to_datetime($row->comment_date),
+            );
         }
         
         return $notes;

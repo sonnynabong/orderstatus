@@ -403,19 +403,22 @@
     background-color: #eff6ff;
     border: 1px solid #dbeafe;
     border-radius: 8px;
-    padding: 1rem;
-    margin-bottom: 1.5rem;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
 }
 
 .wc-ost-customer-note .wc-ost-section-title {
     color: #1e40af;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
 }
 
 .wc-ost-note-content {
     color: #374151;
     font-size: 0.9375rem;
-    line-height: 1.6;
+    line-height: 1.5;
+}
+
+.wc-ost-note-body {
     white-space: pre-wrap;
     word-wrap: break-word;
 }
@@ -423,8 +426,8 @@
 /* Multiple notes styling */
 .wc-ost-note-content:not(:last-child) {
     border-bottom: 1px solid #dbeafe;
-    padding-bottom: 0.75rem;
-    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 /* Order note meta (date) */
@@ -438,7 +441,7 @@
 .wc-ost-checkout-note {
     background-color: #ffffff;
     border-radius: 6px;
-    padding: 0.75rem;
+    padding: 0.5rem;
     border: 1px solid #dbeafe;
 }
 
