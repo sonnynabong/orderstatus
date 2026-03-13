@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: WC Order Status Tracker
- * Plugin URI:  https://example.com/wc-order-status-tracker
+ * Plugin URI:  https://sonnynabong.dev/wc-order-status-tracker
  * Description: A WooCommerce plugin that allows customers to track their order status using order ID and email via shortcode.
- * Version:     1.0.0
- * Author:      Your Name
- * Author URI:  https://example.com
+ * Version:     1
+ * Author:      Sonny Nabong
+ * Author URI:  https://sonnynabong.dev
  * License:     GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: wc-order-status-tracker
@@ -21,7 +21,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('WC_OST_VERSION', '1.0.0');
+define('WC_OST_VERSION', '1');
 define('WC_OST_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('WC_OST_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -109,6 +109,10 @@ class WC_Order_Status_Tracker {
             return '<div class="wc-ost-error">' . __('WooCommerce is required for this plugin to work.', 'wc-order-status-tracker') . '</div>';
         }
 
+        // Check if title/description were explicitly set (even to empty string)
+        $has_title = isset($atts['title']);
+        $has_description = isset($atts['description']);
+        
         $atts = shortcode_atts(array(
             'title'       => __('Track Your Order', 'wc-order-status-tracker'),
             'description' => __('Enter your Order ID and Email address to track your order status.', 'wc-order-status-tracker'),
@@ -118,11 +122,11 @@ class WC_Order_Status_Tracker {
         ?>
         <div class="wc-order-tracker-wrapper">
             <div class="wc-order-tracker-form-container">
-                <?php if ($atts['title']) : ?>
+                <?php if (!$has_title && $atts['title'] || $has_title && $atts['title'] !== '') : ?>
                     <h2 class="wc-ost-title"><?php echo esc_html($atts['title']); ?></h2>
                 <?php endif; ?>
                 
-                <?php if ($atts['description']) : ?>
+                <?php if (!$has_description && $atts['description'] || $has_description && $atts['description'] !== '') : ?>
                     <p class="wc-ost-description"><?php echo esc_html($atts['description']); ?></p>
                 <?php endif; ?>
 
@@ -289,6 +293,9 @@ class WC_Order_Status_Tracker {
         $billing_name    = $order->get_formatted_billing_full_name();
         $total           = $order->get_formatted_order_total();
 
+        // Get order notes visible to customer (added by admin as "Note to customer")
+        $customer_order_notes = $this->get_customer_order_notes($order_id);
+
         // Status steps for visual timeline
         $status_steps = $this->get_status_steps($status);
 
@@ -353,13 +360,25 @@ class WC_Order_Status_Tracker {
                 </div>
             </div>
 
-            <!-- Customer Note -->
-            <?php if ($customer_note) : ?>
+            <!-- Customer Notes (checkout note + admin notes to customer) -->
+            <?php if ($customer_note || !empty($customer_order_notes)) : ?>
             <div class="wc-ost-customer-note">
-                <h4 class="wc-ost-section-title"><?php _e('Customer Note', 'wc-order-status-tracker'); ?></h4>
-                <div class="wc-ost-note-content">
+                <h4 class="wc-ost-section-title"><?php _e('Notes', 'wc-order-status-tracker'); ?></h4>
+                
+                <?php if ($customer_note) : ?>
+                <div class="wc-ost-note-content wc-ost-checkout-note">
                     <?php echo wp_kses_post($this->make_urls_clickable($customer_note)); ?>
                 </div>
+                <?php endif; ?>
+                
+                <?php foreach ($customer_order_notes as $note) : ?>
+                <div class="wc-ost-note-content wc-ost-order-note">
+                    <div class="wc-ost-note-meta">
+                        <?php echo esc_html(wc_format_datetime($note->date_created)); ?>
+                    </div>
+                    <?php echo wp_kses_post($this->make_urls_clickable($note->content)); ?>
+                </div>
+                <?php endforeach; ?>
             </div>
             <?php endif; ?>
 
@@ -452,6 +471,39 @@ class WC_Order_Status_Tracker {
         }
 
         return $steps;
+    }
+
+    /**
+     * Get order notes visible to customer
+     * 
+     * @param int $order_id Order ID
+     * @return array Array of note objects with content and date
+     */
+    private function get_customer_order_notes($order_id) {
+        $notes = array();
+        
+        // Get all order notes of type 'customer' (visible to customer)
+        $args = array(
+            'post_id' => $order_id,
+            'approve' => 'approve',
+            'type'    => 'order_note',
+        );
+        
+        $comments = get_comments($args);
+        
+        foreach ($comments as $comment) {
+            $note_meta = get_comment_meta($comment->comment_ID, 'is_customer_note', true);
+            
+            // Check if this is a customer note (is_customer_note = 1)
+            if ($note_meta === '1' || $note_meta === 1 || $note_meta === true) {
+                $notes[] = (object) array(
+                    'content'       => $comment->comment_content,
+                    'date_created'  => wc_string_to_datetime($comment->comment_date),
+                );
+            }
+        }
+        
+        return $notes;
     }
 
     /**

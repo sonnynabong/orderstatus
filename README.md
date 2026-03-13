@@ -205,7 +205,7 @@ Yes! Fully translatable using WordPress standard gettext functions.
 
 ## Changelog
 
-### 1.0.0 - 2026-03-13
+### 1.0 - 2026-03-13
 - Initial release
 - Security hardening with rate limiting, CSRF protection, XSS prevention
 - Beautiful visual timeline
