@@ -3,7 +3,7 @@
  * Plugin Name: WC Order Status Tracker
  * Plugin URI:  https://sonnynabong.dev/wc-order-status-tracker
  * Description: A WooCommerce plugin that allows customers to track their order status using order ID and email via shortcode.
- * Version:     1
+ * Version:     1.1.0
  * Author:      Sonny Nabong
  * Author URI:  https://sonnynabong.dev
  * License:     GPL v2 or later
@@ -21,9 +21,12 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('WC_OST_VERSION', '1');
+define('WC_OST_VERSION', '1.1.0');
 define('WC_OST_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('WC_OST_PLUGIN_URL', plugin_dir_url(__FILE__));
+
+// Include feedback functionality
+require_once WC_OST_PLUGIN_DIR . 'includes/class-wc-ost-feedback.php';
 
 /**
  * Main plugin class
@@ -54,6 +57,31 @@ class WC_Order_Status_Tracker {
         add_shortcode('wc_order_tracker', array($this, 'render_tracker_form'));
         add_action('wp_ajax_wc_ost_get_order_status', array($this, 'ajax_get_order_status'));
         add_action('wp_ajax_nopriv_wc_ost_get_order_status', array($this, 'ajax_get_order_status'));
+        
+        // Add admin menu for feedback test page (fallback if WooCommerce settings not available)
+        add_action('admin_menu', array($this, 'add_admin_menu'));
+    }
+
+    /**
+     * Add admin menu page for feedback testing
+     */
+    public function add_admin_menu() {
+        add_options_page(
+            __('Feedback Email Test', 'wc-order-status-tracker'),
+            __('Feedback Email Test', 'wc-order-status-tracker'),
+            'manage_woocommerce',
+            'wc-ost-feedback-test',
+            array($this, 'render_feedback_test_page')
+        );
+    }
+
+    /**
+     * Render the feedback test page (fallback)
+     */
+    public function render_feedback_test_page() {
+        // Redirect to WooCommerce settings if available
+        wp_redirect(admin_url('admin.php?page=wc-settings&tab=wc_ost_feedback&section=test'));
+        exit;
     }
 
     /**
@@ -572,5 +600,19 @@ function wc_ost_activate() {
         deactivate_plugins(plugin_basename(__FILE__));
         wp_die(__('This plugin requires WooCommerce to be installed and activated.', 'wc-order-status-tracker'));
     }
+    
+    // If feedback feature is already enabled, ensure activation time is set
+    if (WC_OST_Feedback::is_enabled() && !WC_OST_Feedback::get_activation_time()) {
+        WC_OST_Feedback::enable();
+    }
 }
 register_activation_hook(__FILE__, 'wc_ost_activate');
+
+/**
+ * Deactivation hook
+ */
+function wc_ost_deactivate() {
+    // Clear all scheduled feedback email events
+    wp_clear_scheduled_hook(WC_OST_Feedback::CRON_HOOK);
+}
+register_deactivation_hook(__FILE__, 'wc_ost_deactivate');
