@@ -1,50 +1,58 @@
-# 🚚 WC Order Status Tracker
+# WC Order Status Tracker
 
 [![WordPress](https://img.shields.io/badge/WordPress-5.8%2B-blue.svg)](https://wordpress.org/)
 [![WooCommerce](https://img.shields.io/badge/WooCommerce-6.0%2B-96588a.svg)](https://woocommerce.com/)
 [![PHP](https://img.shields.io/badge/PHP-7.4%2B-777bb4.svg)](https://php.net/)
 [![License](https://img.shields.io/badge/License-GPL%20v2%2B-green.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
 
-> A beautiful, secure WooCommerce plugin that lets customers track their order status with a simple shortcode.
+A beautiful, secure WooCommerce plugin that lets customers track their order status with a simple shortcode.
 
-## 📋 Table of Contents
+![Plugin Screenshot](https://via.placeholder.com/800x400/3b82f6/ffffff?text=WC+Order+Status+Tracker)
 
-- [Features](#-features)
-- [Screenshots](#-screenshots)
-- [Installation](#-installation)
-- [Usage](#-usage)
-- [Security](#-security)
-- [FAQ](#-faq)
-- [Changelog](#-changelog)
-- [Contributing](#-contributing)
-- [License](#-license)
+## Table of Contents
 
-## ✨ Features
+- [Features](#features)
+- [Screenshots](#screenshots)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Security](#security)
+- [FAQ](#faq)
+- [Changelog](#changelog)
+- [Contributing](#contributing)
+- [License](#license)
 
-### 🎨 Beautiful Design
+## Features
+
+### Beautiful Design
 - **Modern card-based UI** with smooth animations
 - **Visual timeline** showing order progress
 - **Responsive design** - works perfectly on mobile and desktop
 - **Color-coded status badges** for quick recognition
 
-### 🔒 Security First
-- ✅ CSRF protection with nonce verification
-- ✅ Rate limiting (5 attempts per 15 minutes)
-- ✅ Timing-safe comparison to prevent order enumeration
-- ✅ XSS protection with URL protocol validation
-- ✅ All inputs sanitized and outputs escaped
+### Security First
+- CSRF protection with nonce verification
+- Rate limiting (5 attempts per 15 minutes)
+- Timing-safe comparison to prevent order enumeration
+- XSS protection with URL protocol validation
+- All inputs sanitized and outputs escaped
 
-### ⚡ AJAX Powered
+### AJAX Powered
 - **No page reload** required
 - **Instant feedback** with loading states
 - **Smooth slide animations**
 
-### 🔗 Smart Features
+### Smart Features
 - **Auto-link detection** - Converts URLs in customer notes to clickable links
 - **Protocol validation** - Only allows safe `http://` and `https://` URLs
 - **Security attributes** - Links open in new tab with `rel="noopener noreferrer"`
 
-## 🚀 Installation
+## Screenshots
+
+| Tracking Form | Order Status Result |
+|:-------------:|:-------------------:|
+| ![Form](https://via.placeholder.com/350x300/f3f4f6/374151?text=Tracking+Form) | ![Result](https://via.placeholder.com/350x300/d1fae5/065f46?text=Status+Result) |
+
+## Installation
 
 ### Automatic (Recommended)
 
@@ -70,7 +78,7 @@ Then activate through the WordPress admin.
 - WooCommerce 6.0+
 - PHP 7.4+
 
-## 📖 Usage
+## Usage
 
 ### Basic Shortcode
 
@@ -107,18 +115,18 @@ Then activate through the WordPress admin.
 4. Publish the page
 5. Add the page to your navigation menu
 
-## 🎯 What Customers See
+## What Customers See
 
-1. **📋 Order Header** - Order number with status badge
-2. **👤 Order Info** - Date, customer name, total amount
-3. **📍 Status Timeline** - Visual progress through:
+1. **Order Header** - Order number with status badge
+2. **Order Info** - Date, customer name, total amount
+3. **Status Timeline** - Visual progress through:
    ```
    Pending → Processing → Completed → Shipped → Delivered
    ```
-4. **📝 Customer Notes** - Shop manager notes with clickable links
-5. **📦 Order Items** - List of products ordered
+4. **Customer Notes** - Shop manager notes with clickable links
+5. **Order Items** - List of products ordered
 
-## 📁 File Structure
+## File Structure
 
 ```
 wc-order-status-tracker/
@@ -134,7 +142,7 @@ wc-order-status-tracker/
         └── wc-ost-script.js          # Plugin JavaScript
 ```
 
-## 🔐 Security
+## Security
 
 This plugin implements enterprise-grade security:
 
@@ -150,7 +158,7 @@ This plugin implements enterprise-grade security:
 
 See [SECURITY_AUDIT.md](SECURITY_AUDIT.md) for detailed security analysis.
 
-## ❓ FAQ
+## FAQ
 
 ### What Order ID should customers enter?
 
@@ -186,16 +194,16 @@ Yes. The plugin verifies email ownership before displaying any data and includes
 
 Yes! Fully translatable using WordPress standard gettext functions.
 
-## 📝 Changelog
+## Changelog
 
 ### 1.0.0 - 2026-03-13
-- ✨ Initial release
-- 🔒 Security hardening with rate limiting, CSRF protection, XSS prevention
-- 🎨 Beautiful visual timeline
-- 🔗 Auto-link detection in customer notes
-- 📱 Fully responsive design
+- Initial release
+- Security hardening with rate limiting, CSRF protection, XSS prevention
+- Beautiful visual timeline
+- Auto-link detection in customer notes
+- Fully responsive design
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
@@ -205,7 +213,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📄 License
+## License
 
 This project is licensed under the GPL v2 or later - see the [LICENSE](LICENSE) file for details.
 
@@ -219,7 +227,7 @@ the Free Software Foundation, either version 2 of the License, or
 ---
 
 <p align="center">
-  Built with ❤️ for the WooCommerce community
+  Built with care for the WooCommerce community
 </p>
 
 <p align="center">
