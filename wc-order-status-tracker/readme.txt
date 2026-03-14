@@ -1,13 +1,13 @@
 === WC Order Status Tracker ===
 Contributors: sonnynabong
 Donate link: https://sonnynabong.dev/donate
-Tags: woocommerce, order tracking, order status, shortcode, customer, tracking
+Tags: woocommerce, order tracking, order status, shortcode, customer, tracking, feedback, email
 Requires at least: 5.8
 Tested up to: 6.4
 Requires PHP: 7.4
 WC requires at least: 6.0
 WC tested up to: 8.0
-Stable tag: 1
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,6 +26,13 @@ Simply add the `[wc_order_tracker]` shortcode to any page, and your customers ca
 * Visual timeline showing order progress
 * Responsive design - works perfectly on mobile and desktop
 * Color-coded status badges for quick recognition
+
+**📧 Automated Feedback Emails**
+* Automatically send feedback request emails 7 days after order completion
+* Beautiful, professional email template
+* Test email functionality in admin
+* Only sends to new orders (prevents spamming old customers)
+* One email per order - no duplicates
 
 **🔒 Security First**
 * CSRF protection with nonce verification
@@ -52,6 +59,23 @@ Simply add the `[wc_order_tracker]` shortcode to any page, and your customers ca
    - Pending Payment → Processing → Completed → Shipped → Delivered
 4. **Customer Notes** - Any notes added by the shop manager
 5. **Order Items** - List of products in the order
+
+= 📧 Feedback Email Feature =
+
+Automatically request customer feedback 7 days after their order is marked as completed.
+
+**Key Features:**
+* **Smart Activation**: Records when you enable the feature - only sends to orders placed after activation
+* **Automatic Scheduling**: Emails are scheduled when an order is marked "Completed"
+* **7-Day Delay**: Gives customers time to receive and evaluate their purchase
+* **One Per Order**: Each customer receives only one feedback request
+* **Test Functionality**: Send test emails to preview how they look
+
+**Setup:**
+1. Go to **WooCommerce > Settings > Feedback Emails**
+2. Check "Enable Feedback Emails"
+3. Save changes
+4. Use the "Send Test Email" tab to preview the email
 
 = 🎯 Use Cases =
 
@@ -155,6 +179,20 @@ The timeline adapts to show the appropriate flow for:
 * On-hold orders
 * Failed orders
 
+= How do the feedback emails work? =
+
+When you enable feedback emails, the plugin records the current date/time. From that point forward, whenever an order is marked as "Completed", a feedback email is automatically scheduled to be sent 7 days later.
+
+**Important:** Orders placed BEFORE you enabled the feature will NOT receive emails. This prevents accidentally spamming customers who ordered in the past.
+
+= Can I customize the feedback email? =
+
+The email template uses the feedback form URL (set in settings) and your site's name. The template is professionally designed with a modern gradient header and clear call-to-action. For advanced customization, you can override the template in your theme.
+
+= Will feedback emails be sent to old orders? =
+
+No! The plugin tracks when you first enable the feature and only sends emails for orders placed after that date. This is a safety feature to prevent spamming customers with feedback requests for orders they placed months ago.
+
 == Screenshots ==
 
 1. Order tracking form - Clean, modern form for entering Order ID and Email
@@ -163,6 +201,15 @@ The timeline adapts to show the appropriate flow for:
 4. Customer note with links - URLs automatically converted to clickable links
 
 == Changelog ==
+
+= 1.1.0 - 2026-03-14 =
+* Added automated feedback email feature
+* Send feedback request emails 7 days after order completion
+* Admin settings page under WooCommerce > Settings > Feedback Emails
+* Test email functionality with live preview
+* Smart activation - only sends to new orders
+* Professional email template with gradient design
+* Prevents duplicate emails with order meta tracking
 
 = 1.0.0 - 2026-03-13 =
 * Initial release
@@ -178,6 +225,9 @@ The timeline adapts to show the appropriate flow for:
 * Full translation support
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+Added feedback email feature. Visit WooCommerce > Settings > Feedback Emails to configure.
 
 = 1.0.0 =
 Initial release. No upgrade necessary.
